@@ -8,7 +8,9 @@ var subsets = function (nums) {
     res.push(path.slice())
     for (let i = start; i < nums.length; i++) {
       path.push(nums[i])
+      console.log(i);
       dfs(i+1,path)
+      console.log(i,'++');
       path.pop()
     }
   }
