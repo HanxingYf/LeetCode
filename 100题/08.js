@@ -1,0 +1,3 @@
+var waysToChange = function(n) {
+
+};
