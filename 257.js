@@ -14,3 +14,4 @@ var binaryTreePaths = function(root) {
     }
     return res
 };
+// 待学习
