@@ -1,33 +1,44 @@
-// function repeat(func, times, wait) {
-//     return function (arg) {
-//         for (let i = 1; i <= times; i++) {
-//             setTimeout(() => {
-//                 func(arg);
-//             }, wait*i)
-//         }
-//     }
-// }
-// function log(msg){console.log(msg)}
-// const repeatFunc = repeat(log, 4, 3000);
-// repeatFunc("hellworld");
+class EventEmitter {
+    constructor() {
+        this.events = {}
+    }
+    // 订阅
+    on(eventName, callBack) {
+        if(!this.events[eventName]) {
+            this.events[eventName] = [callBack]
+        }else {
+            this.events[eventName].push(callBack)
+        }
+    }
+    // 删除订阅
+    off(eventName, callBack) {
+        if(!this.events[eventName]) return
+        this.events = this.events[eventName].filter(item => {
+            return item !== callBack
+        })
+    }
+    // 触发事件
+    emit(eventName, ...rest) {
+        this.events[eventName] && this.events[eventName].forEach((fn) =>{
+            fn.apply(this, rest)
+        })
+    }
+    // 执行一次
+    once(eventName, callBack) {
+        function fn() {
+            callBack()
+        }
+    }
+}
 
-console.log('1');
-setTimeout(function() {
-    console.log('2');
-    process.nextTick(function(){
-        console.log('3');
-    })
-    new Promise(function(resolve){
-        console.log('4');
-        resolve()
-    }).then(function(){
-        console.log('5');
-    })
-})
-process.nextTick(function(){
-    console.log('6');
-})
-new Promise(function(resolve){
-    console.log('7');
-    resolve()
+const em = new EventEmitter()
+const handle = (...rest) => {
+    console.log(rest);
+}
+em.on('click', handle)
+em.emit('click', 1,2,3)
+em.off('click',handle)
+em.off('click',1)
+em.once('dbClick', ()=>{
+    console.log('once');
 })
