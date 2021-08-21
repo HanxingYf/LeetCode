@@ -25,24 +25,22 @@
  */
  var permute = function(nums) {
   const res = [], path = []
-  const used = new Array(nums.length).fill(false)
-
+  let used = new Array(nums.length).fill(false)
   const dfs = () => {
-      if (path.length == nums.length) {
-          res.push(path.slice())
-          return
-      }
-
-      for (let i = 0; i < nums.length; i++) {
-          if (used[i]) continue
-          path.push(nums[i])
-          used[i] = true
-          dfs()
-          path.pop()
-          used[i] = false
-      }
+    if(path.length === nums.length) {
+        res.push(path.slice())
+        return
+    }
+    for(let i = 0;i<nums.length; i++){
+        if(!used[i]) {
+            used[i] = true
+            path.push(nums[i])
+            dfs(path)
+            path.pop()
+            used[i] = false
+        }
+    }
   }
-
   dfs()
   return res
 };
